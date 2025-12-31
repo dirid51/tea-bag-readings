@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Moon, Sun, Upload, Download, Users, BookOpen, BarChart3, Eye, PlusCircle, Edit2, X, Check, AlertCircle, Calendar, User, Search, ChevronDown, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { Moon, Sun, Upload, Users, BookOpen, BarChart3, Eye, PlusCircle, Edit2, X, Check, AlertCircle, Calendar, User, Search, ChevronDown, ChevronRight } from 'lucide-react';
 
 // Types
 interface Card {
@@ -83,6 +83,12 @@ export default function TeaLeafReader() {
   const [theme, setTheme] = useState(data.settings.theme);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
+  const handleViewChange = (newView: string) => {
+    if (['dashboard', 'cards', 'groups', 'enter-reading', 'view-readings', 'analytics'].includes(newView)) {
+      setCurrentView(newView as typeof currentView);
+    }
+  };
+
   // Auto-save with debouncing
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -157,12 +163,12 @@ export default function TeaLeafReader() {
                 key={id}
                 onClick={() => setCurrentView(id as any)}
                 className={`px-4 py-3 flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${currentView === id
-                    ? theme === 'dark'
-                      ? 'border-amber-500 text-amber-400'
-                      : 'border-amber-600 text-amber-700'
-                    : theme === 'dark'
-                      ? 'border-transparent text-gray-400 hover:text-gray-200'
-                      : 'border-transparent text-gray-600 hover:text-gray-900'
+                  ? theme === 'dark'
+                    ? 'border-amber-500 text-amber-400'
+                    : 'border-amber-600 text-amber-700'
+                  : theme === 'dark'
+                    ? 'border-transparent text-gray-400 hover:text-gray-200'
+                    : 'border-transparent text-gray-600 hover:text-gray-900'
                   }`}
               >
                 <Icon className="w-4 h-4" />
@@ -176,8 +182,8 @@ export default function TeaLeafReader() {
       {/* Notification */}
       {notification && (
         <div className={`fixed top-20 right-4 z-50 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 ${notification.type === 'success'
-            ? theme === 'dark' ? 'bg-green-900 text-green-100' : 'bg-green-100 text-green-900'
-            : theme === 'dark' ? 'bg-red-900 text-red-100' : 'bg-red-100 text-red-900'
+          ? theme === 'dark' ? 'bg-green-900 text-green-100' : 'bg-green-100 text-green-900'
+          : theme === 'dark' ? 'bg-red-900 text-red-100' : 'bg-red-100 text-red-900'
           }`}>
           {notification.type === 'success' ? <Check className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
           {notification.message}
@@ -186,7 +192,7 @@ export default function TeaLeafReader() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {currentView === 'dashboard' && <Dashboard data={data} theme={theme} setCurrentView={setCurrentView} />}
+        {currentView === 'dashboard' && <Dashboard data={data} theme={theme} setCurrentView={handleViewChange} />}
         {currentView === 'cards' && <CardLibrary data={data} updateData={updateData} theme={theme} showNotification={showNotification} />}
         {currentView === 'groups' && <GroupManagement data={data} updateData={updateData} theme={theme} showNotification={showNotification} />}
         {currentView === 'enter-reading' && <EnterReading data={data} updateData={updateData} theme={theme} showNotification={showNotification} />}
@@ -981,8 +987,8 @@ function EnterReading({ data, updateData, theme, showNotification }: any) {
                     key={card.id}
                     onClick={() => handleSelectCard(card)}
                     className={`p-4 rounded-lg text-left transition-colors ${theme === 'dark'
-                        ? 'bg-gray-700 hover:bg-gray-600'
-                        : 'bg-gray-50 hover:bg-gray-100'
+                      ? 'bg-gray-700 hover:bg-gray-600'
+                      : 'bg-gray-50 hover:bg-gray-100'
                       }`}
                   >
                     <div className="font-bold mb-1">{card.name}</div>
@@ -1369,4 +1375,36 @@ function Analytics({ data, theme }: any) {
         {cardFrequency.length === 0 ? (
           <div className="text-center py-8">
             <BarChart3 className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-            <p className={theme === 'dark' ? 'text-gray
+            <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
+              No readings data available for this filter
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {cardFrequency.map((item, idx) => (
+              <div key={item.card.id} className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <div className="font-bold">{idx + 1}. {item.card.name}</div>
+                    <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {item.card.shortDescription}
+                    </div>
+                  </div>
+                  <div className={`text-2xl font-bold ${theme === 'dark' ? 'text-amber-400' : 'text-amber-600'}`}>
+                    {item.count}
+                  </div>
+                </div>
+                <div className={`h-2 rounded-full ${theme === 'dark' ? 'bg-gray-600' : 'bg-gray-200'}`}>
+                  <div
+                    className="h-full bg-amber-600 rounded-full"
+                    style={{ width: `${(item.count / cardFrequency[0].count) * 100}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
