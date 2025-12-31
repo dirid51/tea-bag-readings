@@ -80,7 +80,7 @@ const saveData = (data: AppData) => {
 export default function TeaLeafReader() {
   const [data, setData] = useState<AppData>(loadData);
   const [currentView, setCurrentView] = useState<'dashboard' | 'cards' | 'groups' | 'enter-reading' | 'view-readings' | 'analytics'>('dashboard');
-  const [theme, setTheme] = useState(data.settings.theme);
+  const theme = data.settings.theme;
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   const handleViewChange = (newView: string) => {
@@ -97,14 +97,13 @@ export default function TeaLeafReader() {
     return () => clearTimeout(timer);
   }, [data]);
 
-  // Theme effect
+  // Ensure no 'dark' class on html
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  }, [theme]);
+    document.documentElement.classList.remove('dark');
+  }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
     setData(prev => ({
       ...prev,
       settings: { ...prev.settings, theme: newTheme }
