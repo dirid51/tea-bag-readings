@@ -114,8 +114,8 @@ export default function TeaLeafReader() {
     setData(updater);
   };
 
-  const containerClass = theme === 'dark' 
-    ? 'min-h-screen bg-gray-900 text-gray-100' 
+  const containerClass = theme === 'dark'
+    ? 'min-h-screen bg-gray-900 text-gray-100'
     : 'min-h-screen bg-amber-50 text-gray-900';
 
   return (
@@ -156,15 +156,14 @@ export default function TeaLeafReader() {
               <button
                 key={id}
                 onClick={() => setCurrentView(id as any)}
-                className={`px-4 py-3 flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${
-                  currentView === id
+                className={`px-4 py-3 flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${currentView === id
                     ? theme === 'dark'
                       ? 'border-amber-500 text-amber-400'
                       : 'border-amber-600 text-amber-700'
                     : theme === 'dark'
                       ? 'border-transparent text-gray-400 hover:text-gray-200'
                       : 'border-transparent text-gray-600 hover:text-gray-900'
-                }`}
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 {label}
@@ -176,11 +175,10 @@ export default function TeaLeafReader() {
 
       {/* Notification */}
       {notification && (
-        <div className={`fixed top-20 right-4 z-50 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 ${
-          notification.type === 'success'
+        <div className={`fixed top-20 right-4 z-50 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 ${notification.type === 'success'
             ? theme === 'dark' ? 'bg-green-900 text-green-100' : 'bg-green-100 text-green-900'
             : theme === 'dark' ? 'bg-red-900 text-red-100' : 'bg-red-100 text-red-900'
-        }`}>
+          }`}>
           {notification.type === 'success' ? <Check className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
           {notification.message}
         </div>
@@ -338,7 +336,7 @@ function CardLibrary({ data, updateData, theme, showNotification }: any) {
     try {
       const cards = JSON.parse(importText);
       if (!Array.isArray(cards)) throw new Error('Invalid format');
-      
+
       const validCards = cards.map((c, i) => ({
         id: c.name || `card-${i}`,
         name: c.name || `Card ${i + 1}`,
@@ -369,7 +367,7 @@ function CardLibrary({ data, updateData, theme, showNotification }: any) {
   };
 
   const cardClass = theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-amber-200';
-  const inputClass = theme === 'dark' 
+  const inputClass = theme === 'dark'
     ? 'w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500'
     : 'w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500';
 
@@ -530,7 +528,7 @@ function GroupManagement({ data, updateData, theme, showNotification }: any) {
 
   const handleCreateGroup = () => {
     if (!newGroupName.trim()) return;
-    
+
     const newGroup: Group = {
       id: Date.now().toString(),
       name: newGroupName,
@@ -549,15 +547,15 @@ function GroupManagement({ data, updateData, theme, showNotification }: any) {
 
   const handleAddMember = (group: Group) => {
     if (!newMemberName.trim()) return;
-    
+
     updateData((prev: AppData) => ({
       ...prev,
-      groups: prev.groups.map(g => 
+      groups: prev.groups.map(g =>
         g.id === group.id
           ? {
-              ...g,
-              members: [...g.members, { name: newMemberName, joinedYears: [selectedYear] }]
-            }
+            ...g,
+            members: [...g.members, { name: newMemberName, joinedYears: [selectedYear] }]
+          }
           : g
       )
     }));
@@ -568,7 +566,7 @@ function GroupManagement({ data, updateData, theme, showNotification }: any) {
   };
 
   const cardClass = theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-amber-200';
-  const inputClass = theme === 'dark' 
+  const inputClass = theme === 'dark'
     ? 'w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500'
     : 'w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500';
 
@@ -982,11 +980,10 @@ function EnterReading({ data, updateData, theme, showNotification }: any) {
                   <button
                     key={card.id}
                     onClick={() => handleSelectCard(card)}
-                    className={`p-4 rounded-lg text-left transition-colors ${
-                      theme === 'dark'
+                    className={`p-4 rounded-lg text-left transition-colors ${theme === 'dark'
                         ? 'bg-gray-700 hover:bg-gray-600'
                         : 'bg-gray-50 hover:bg-gray-100'
-                    }`}
+                      }`}
                   >
                     <div className="font-bold mb-1">{card.name}</div>
                     <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
