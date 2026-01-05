@@ -1158,7 +1158,7 @@ function ViewReadings({ data, theme }: any) {
                             >
                               <div className="flex justify-between items-start">
                                 <div className="font-medium">{card.name}</div>
-                                {isExpanded ? <ChevronDown className="w-4 h-4 flex-shrink-0" /> : <ChevronRight className="w-4 h-4 flex-shrink-0" />}
+                                {isExpanded ? <ChevronDown className="w-4 h-4 shrink-0" /> : <ChevronRight className="w-4 h-4 shrink-0" />}
                               </div>
                               <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                                 {card.shortDescription}
@@ -1207,7 +1207,7 @@ function ViewReadings({ data, theme }: any) {
                               >
                                 <div className="flex justify-between items-start">
                                   <div className="font-medium">{card.name}</div>
-                                  {isExpanded ? <ChevronDown className="w-4 h-4 flex-shrink-0" /> : <ChevronRight className="w-4 h-4 flex-shrink-0" />}
+                                  {isExpanded ? <ChevronDown className="w-4 h-4 shrink-0" /> : <ChevronRight className="w-4 h-4 shrink-0" />}
                                 </div>
                                 <div className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                                   {card.shortDescription}
