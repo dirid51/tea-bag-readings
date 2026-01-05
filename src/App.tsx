@@ -279,7 +279,7 @@ function Dashboard({ data, theme, setCurrentView }: { data: AppData; theme: stri
               <Upload className="w-8 h-8 mb-3 text-amber-500" />
               <h4 className="font-bold text-lg mb-2">Import Fortune Cards</h4>
               <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
-                Start by importing your 200 fortune cards
+                Start by importing your fortune cards
               </p>
             </button>
           ) : stats.totalGroups === 0 ? (
@@ -446,7 +446,7 @@ function CardLibrary({ data, updateData, theme, showNotification }: any) {
           <Upload className="w-16 h-16 mx-auto mb-4 text-gray-400" />
           <h3 className="text-xl font-bold mb-2">No Cards Yet</h3>
           <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
-            Import your 200 fortune cards to get started
+            Import your fortune cards to get started
           </p>
         </div>
       ) : (
