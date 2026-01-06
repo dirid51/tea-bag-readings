@@ -712,19 +712,41 @@ function EnterReading({ data, updateData, theme, showNotification }: any) {
   const [alreadySelected, setAlreadySelected] = useState<Set<string>>(new Set());
   const [showCardPicker, setShowCardPicker] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [existingReading, setExistingReading] = useState<PersonYearReading | null>(null);
 
+  // Load existing reading and determine starting month
   useEffect(() => {
     if (selectedGroup && selectedPerson && selectedYear) {
       const reading = selectedGroup.yearReadings[selectedYear]?.[selectedPerson];
+      setExistingReading(reading || null);
+
       if (reading) {
+        // Find first incomplete month
+        const firstIncomplete = reading.readings.findIndex(r => !r || r.cards.length !== 4);
+        setCurrentMonth(firstIncomplete === -1 ? reading.readings.length : firstIncomplete);
+
         const used = new Set<string>();
         reading.readings.slice(0, currentMonth).forEach(m => {
-          m.cards.forEach(c => used.add(c.id));
+          if (m) m.cards.forEach(c => used.add(c.id));
         });
         setAlreadySelected(used);
+      } else {
+        setCurrentMonth(0);
+        setAlreadySelected(new Set());
       }
     }
-  }, [selectedGroup, selectedPerson, selectedYear, currentMonth]);
+  }, [selectedGroup, selectedPerson, selectedYear]);
+
+  // Update already selected cards when month changes
+  useEffect(() => {
+    if (existingReading) {
+      const used = new Set<string>();
+      existingReading.readings.slice(0, currentMonth).forEach(m => {
+        if (m) m.cards.forEach(c => used.add(c.id));
+      });
+      setAlreadySelected(used);
+    }
+  }, [currentMonth, existingReading]);
 
   const availableCards = useMemo(() => {
     return data.cards.filter((card: Card) =>
